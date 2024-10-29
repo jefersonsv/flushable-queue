@@ -15,9 +15,9 @@ export class FlushableQueue {
     this.flushSize = options?.flushSize ?? undefined;
 
     if (this.flushInterval) {
-        this.interval = setInterval(async () => {
+      this.interval = setInterval(async () => {
         await this.flush();
-        }, this.flushInterval);
+      }, this.flushInterval);
     }
   }
 

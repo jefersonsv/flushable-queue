@@ -1,13 +1,14 @@
 {
   "name": "flushable-queue",
+  "author": "Jeferson Tenorio",
   "version": "1.0.0",
-  "description": "",
+  "type": "module",
+  "description": "Enqueue items and flush regularly",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.8.2"
