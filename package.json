@@ -1,7 +1,7 @@
 {
   "name": "flushable-queue",
   "author": "Jeferson Tenorio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Enqueue items and flush regularly",
   "main": "index.js",
