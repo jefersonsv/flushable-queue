@@ -1,9 +1,11 @@
 export class FlushableQueue {
   private queue: any[] = [];
-  private interval: NodeJS.Timeout | null = null;
-  private flushInterval?: number;
-  private flushSize?: number;
+  private flushInterval: NodeJS.Timeout | null = null;
+  private flushTimeout: number;
+  private flushSize: number;
   private cb: Function;
+  private enqueuedCount: number;
+  private flushedCount: number;
 
   constructor(
     cb: Function,
@@ -11,35 +13,36 @@ export class FlushableQueue {
   ) {
     this.cb = cb;
 
-    this.flushInterval = options?.flushTimeout ?? undefined;
-    this.flushSize = options?.flushSize ?? undefined;
-
-    if (this.flushInterval) {
-      this.interval = setInterval(async () => {
-        await this.flush();
-      }, this.flushInterval);
-    }
+    this.flushTimeout = options?.flushTimeout ?? 5000;
+    this.flushSize = options?.flushSize ?? 5000;
+    this.enqueuedCount = 0;
+    this.flushedCount = 0;
+    this.flushInterval = setInterval(async () => {
+      await this.flush();
+    }, this.flushTimeout);
   }
 
-  enqueue(item: any) {
+  async enqueue(item: any) {
     this.queue.push(item);
-    if (this.flushSize && this.queue.length >= this.flushSize) {
-      this.flush();
+    this.enqueuedCount += 1;
+    if (this.queue.length >= this.flushSize) {
+      await this.flush();
     }
   }
 
   async flush() {
-    if (this.queue.length > 0) {
+    if (this.queue.length) {
       const itemsToProcess = this.queue.splice(0);
       await this.cb(itemsToProcess);
+      this.flushedCount += itemsToProcess.length;
     }
   }
 
   async stop() {
     await this.flush();
-    if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = null;
+    if (this.flushInterval) {
+      clearInterval(this.flushInterval);
+      this.flushInterval = null;
     }
   }
 }

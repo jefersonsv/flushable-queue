@@ -8,9 +8,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "queue",
+    "enqueue",
+    "flush",
+    "interval",
+    "timeout"
+  ],
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.8.2"
+    "@types/node": "^22.8.2",
+    "tsx": "^4.19.2"
   }
 }
